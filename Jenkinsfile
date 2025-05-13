@@ -25,7 +25,6 @@ pipeline {
         stage('Test')
         {
             steps{
-                step{
                     echo "Testing phase"
                     sh '''
                         npm test
