@@ -25,12 +25,12 @@ pipeline {
         stage('Test')
         {
             steps{
-                    echo "Testing phase"
+                    echo "Testing phase.."
                     sh '''
                         npm test
                     '''
                 }
-            }
         }
-        
     }
+        
+}
