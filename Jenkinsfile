@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                sh 'echo "Today is Tuesday" '
+                sh 'echo "Today is Tuesday..." '
             }
         }
         
