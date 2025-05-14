@@ -23,53 +23,51 @@ pipeline {
             }
         } */
 
-        stage('Test')
-        {
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
+        // Run in parallel
+        stage('Run Tests'){
+            parallel{
+                stage('Unit Test')
+            {
+                agent{
+                    docker{
+                        image 'node:18-alpine'
+                        reuseNode true
+                    }
+                }
+                steps
+                {
+                        echo "Testing phase.."
+                        sh '''
+                            test -f build/index.html
+                            npm test
+                        '''
                 }
             }
-            steps
-            {
-                    echo "Testing phase.."
-                    sh '''
-                        test -f build/index.html
-                        npm test
-                    '''
-            }
-        }
 
-        // Playwright
-        stage('E2E') // End to End
-        {
-            agent{
-                docker{
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
-                    args ''
+            // Playwright
+            stage('E2E') // End to End
+            {
+                agent{
+                    docker{
+                        image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        reuseNode true
+                        args ''
+                    }
+                }
+                steps
+                {
+                        echo "End to End phase.."
+                        sh '''
+
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test --reporter=html
+                        '''
                 }
             }
-            steps
-            {
-                    echo "End to End phase.."
-                    sh '''
-
-                        #npm install -g serve
-                        npm install serve
-
-                        #serve -s build
-                        node_modules/.bin/serve -s build &
-
-                        sleep 10
-
-                        #npx playwright test
-                        npx playwright test --reporter=html
-                    '''
             }
         }
-
 
     }
 
