@@ -3,7 +3,7 @@ pipeline {
 
     stages {
         
-         stage('Build') {
+         /* stage('Build') {
             agent{
                 docker{
                     image 'node:18-alpine'
@@ -21,7 +21,7 @@ pipeline {
                     ls -la
                 '''
             }
-        } 
+        } */
 
         stage('Test')
         {
@@ -64,7 +64,8 @@ pipeline {
 
                         sleep 10
 
-                        npx playwright test
+                        #npx playwright test
+                        npx playwright test --reporter=html
                     '''
             }
         }
