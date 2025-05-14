@@ -55,11 +55,14 @@ pipeline {
             {
                     echo "End to End phase.."
                     sh '''
+
                         #npm install -g serve
                         npm install serve
 
                         #serve -s build
-                        node_modules/.bin/serve -s build
+                        node_modules/.bin/serve -s build &
+
+                        sleep 10
 
                         npx playwright test
                     '''
