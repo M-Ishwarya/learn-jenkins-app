@@ -3,7 +3,7 @@ pipeline {
 
     stages {
         
-         /* stage('Build') {
+         stage('Build') {
             agent{
                 docker{
                     image 'node:18-alpine'
@@ -21,9 +21,10 @@ pipeline {
                     ls -la
                 '''
             }
-        } */
+        }
 
-        // Run in parallel
+
+        // Run stages in parallel
         stage('Run Tests'){
             parallel{
                 stage('Unit Test')
@@ -50,8 +51,7 @@ pipeline {
                 }   
             }
 
-            // Playwright
-            stage('E2E') // End to End
+            stage('E2E') 
             {
                 agent{
                     docker{
@@ -80,6 +80,23 @@ pipeline {
             }
             }
         }
+
+        // Deploy in netlify
+         stage('Deploy') {
+            agent{
+                docker{
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                   npm install netlify-cli -g
+                   netlify --version
+                '''
+            }
+        }
+
 
     }
         
