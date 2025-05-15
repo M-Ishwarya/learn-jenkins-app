@@ -112,7 +112,7 @@ pipeline {
         // Adding approval to deploy
         stage('Approval')
         {
-            step{   
+            steps{   
                     timeout(time: 1, unit: 'MINUTES')
                     {
                         input cancel: 'No,need to deploy', message: 'Ok to deploy', ok: 'Yes I am Sure'
